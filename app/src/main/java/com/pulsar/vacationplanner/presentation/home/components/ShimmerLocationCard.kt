@@ -34,7 +34,7 @@ fun ShimmerLocationCard() {
     Card(
         modifier = Modifier
             .width(LocalConfiguration.current.screenWidthDp.dp / 3)
-            .height(150.dp),
+            .height(LocalConfiguration.current.screenHeightDp.dp / 4).padding(start = 10.dp),
         shape = RoundedCornerShape(10.dp),
         elevation = CardDefaults.cardElevation(2.dp)
     ) {

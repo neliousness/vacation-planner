@@ -18,11 +18,11 @@ val pages = listOf(
     Page(
         title = "Personalized Itineraries",
         description = "Tell us your destination and trip duration, and we'll create a custom itinerary just for you.",
-        image = R.drawable.page_1 // Replace with relevant image
+        image = R.drawable.page_2 // Replace with relevant image
     ),
     Page(
         title = "Explore and Enjoy!",
         description = "Discover amazing attractions, restaurants, and activities tailored to your preferences.",
-        image = R.drawable.page_1 // Replace with relevant image
+        image = R.drawable.page_3 // Replace with relevant image
     )
 )

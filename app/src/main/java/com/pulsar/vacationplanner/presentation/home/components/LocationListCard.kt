@@ -1,10 +1,12 @@
 package com.pulsar.vacationplanner.presentation.home.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -24,7 +26,9 @@ fun LocationListCard(
     onEvent: (HomeEvent) -> Unit
 ) {
     Column {
-        Title(title = title)
+        Box(modifier = Modifier.padding(horizontal = 10.dp)) {
+            Title(title = title)
+        }
         Spacer(modifier = Modifier.height(16.dp))
 
         if (isLoading) {

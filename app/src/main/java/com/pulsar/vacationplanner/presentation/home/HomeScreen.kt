@@ -1,6 +1,7 @@
 package com.pulsar.vacationplanner.presentation.home
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.pulsar.vacationplanner.presentation.common.components.FullScreenLoader
 import com.pulsar.vacationplanner.presentation.common.components.Header
 import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
 import com.pulsar.vacationplanner.presentation.home.components.DualInputField
@@ -33,9 +35,11 @@ fun HomeScreen(
     navHostController: NavHostController
 ) {
 
-    val locationItineraries by homeViewModel.locationItineraries.collectAsState()
-    val recentLocationItineraries by homeViewModel.locationItineraries.collectAsState()
-    val isLoading by homeViewModel.isLoading.collectAsState()
+    val popularLocationItineraries by homeViewModel.locationItineraries.collectAsState()
+    val affordableLocation by homeViewModel.affordableLocationItineraries.collectAsState()
+    val isPopularLoading by homeViewModel.isPopularLoading.collectAsState()
+    val isAffordableLoading by homeViewModel.isAffordableLoading.collectAsState()
+    val isLoadingSearch by homeViewModel.isLoadingSearch.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(key1 = Unit) {
@@ -46,42 +50,52 @@ fun HomeScreen(
                     navHostController.navigate(Route.LocationDetailsScreen.route)
                 }
 
-                is HomeEvent.SearchItinerary -> {}
                 is HomeEvent.Error -> {
                     withContext(Dispatchers.Main) {
                         Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                     }
+                }
+
+                else -> {
+                    // Do nothing
                 }
             }
         }
 
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 36.dp, start = 24.dp, end = 24.dp)
-    ) {
-        Header()
-        Spacer(modifier = Modifier.size(60.dp))
-        DualInputField(homeViewModel::onEvent)
-        Spacer(modifier = Modifier.size(30.dp))
-        LocationListCard(
-            "Popular Destinations",
-            isLoading,
-            locationItineraries,
-            onEvent = homeViewModel::onEvent
-        )
-        Spacer(modifier = Modifier.size(30.dp))
-        LocationListCard(
-            "Recent Locations",
-            isLoading,
-            locationItineraries, onEvent = homeViewModel::onEvent
-        )
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 36.dp)
+        ) {
+            Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                Header()
+                Spacer(modifier = Modifier.size(60.dp))
+                DualInputField(homeViewModel::onEvent)
+            }
+            Spacer(modifier = Modifier.size(30.dp))
+            LocationListCard(
+                "Popular Destinations",
+                isPopularLoading,
+                popularLocationItineraries,
+                onEvent = homeViewModel::onEvent
+            )
+            Spacer(modifier = Modifier.size(30.dp))
+            LocationListCard(
+                "Affordable Destinations",
+                isAffordableLoading,
+                affordableLocation, onEvent = homeViewModel::onEvent
+            )
+
+        }
+        if (isLoadingSearch) {
+            FullScreenLoader()
+        }
 
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

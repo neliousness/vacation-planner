@@ -2,7 +2,8 @@ package com.pulsar.vacationplanner.data.repository
 
 import com.pulsar.vacationplanner.data.model.itinerary.ItineraryRequest
 import com.pulsar.vacationplanner.data.model.itinerary.ItineraryResponse
-import com.pulsar.vacationplanner.data.model.popularDestinations.PopularDestinationResponse
+import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationRequest
+import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationResponse
 import com.pulsar.vacationplanner.data.remote.LocationItineraryApiService
 import com.pulsar.vacationplanner.domain.repository.ItineraryRepository
 import kotlinx.coroutines.delay
@@ -41,14 +42,14 @@ class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiServic
             emit(Result.failure(e))
         }
 
-    override fun getPopularDestinations(): Flow<Result<PopularDestinationResponse?>> =
+    override fun getDestinations(request: DestinationRequest): Flow<Result<DestinationResponse?>> =
         flow {
             var retryCount = 0
-            var popularList: PopularDestinationResponse? = null
+            var popularList: DestinationResponse? = null
 
             while (retryCount < 5 && popularList == null) {
                 try {
-                    val response = apiService.getPopularDestinations()
+                    val response = apiService.getDestinations(request)
                     if (response.isSuccessful && response.body() != null) {
                         popularList = response.body()!!
                         emit(Result.success(popularList))

@@ -62,9 +62,11 @@ dependencies {
     //Splash Api
     implementation (libs.androidx.core.splashscreen)
 
+    // Navigation
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.splashscreen)
 
+    // ViewModels
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
@@ -87,12 +89,4 @@ dependencies {
 
     // Joda time
     implementation(libs.joda.time)
-
-//    // Room components
-//    implementation ("androidx.room:room-runtime:2.5.0")
-//    kapt("androidx.room:room-compiler:2.5.0")
-//
-//
-//    // Coroutines support for Room
-//    implementation ("androidx.room:room-ktx:2.5.0")
 }
