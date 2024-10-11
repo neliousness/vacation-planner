@@ -15,7 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pulsar.vacationplanner.presentation.common.components.Header
 import com.pulsar.vacationplanner.presentation.common.components.InputField
 import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
-import com.pulsar.vacationplanner.presentation.home.components.ItineraryListCard
+import com.pulsar.vacationplanner.presentation.home.components.LocationListCard
 import com.pulsar.vacationplanner.presentation.navgraph.Route
 import com.pulsar.vacationplanner.util.Constants.locationItinerarys
 import kotlinx.coroutines.flow.collectLatest
@@ -30,7 +30,7 @@ fun HomeScreen(
     LaunchedEffect(key1 = Unit) {
         homeViewModel.uiEvent.collectLatest { event ->
             when (event) {
-                is HomeEvent.ItineraryDetails -> {
+                is HomeEvent.GoToItineraryDetails -> {
                     sharedLocationItineraryViewModel.setSelectedLocationItinerary(event.data)
                     navHostController.navigate(
                         Route.DetailsScreen
@@ -39,6 +39,7 @@ fun HomeScreen(
                 }
 
                 is HomeEvent.SearchItinerary -> TODO()
+                is HomeEvent.Error -> TODO()
             }
         }
 
@@ -53,13 +54,13 @@ fun HomeScreen(
         Spacer(modifier = Modifier.size(60.dp))
         InputField(onTextChanged = {}, "Search")
         Spacer(modifier = Modifier.size(30.dp))
-        ItineraryListCard(
+        LocationListCard(
             "Popular Destinations",
             locationItinerarys,
             onEvent = homeViewModel::onEvent
         )
         Spacer(modifier = Modifier.size(30.dp))
-        ItineraryListCard("Suggestions", locationItinerarys, onEvent = homeViewModel::onEvent)
+        LocationListCard("Suggestions", locationItinerarys, onEvent = homeViewModel::onEvent)
 
     }
 }
@@ -68,5 +69,5 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    HomeScreen(koinViewModel(),koinViewModel(), rememberNavController())
+    HomeScreen(koinViewModel(), koinViewModel(), rememberNavController())
 }

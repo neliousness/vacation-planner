@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import com.pulsar.vacationplanner.R
 import com.pulsar.vacationplanner.presentation.common.components.Header
 import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
+import com.pulsar.vacationplanner.presentation.details.components.ItineraryListCard
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
@@ -89,6 +88,7 @@ fun DetailsScreen(
 
             //Location Title
             Header(title = itinerary.location)
+            ItineraryListCard(itinerary.itinerary)
 
         }
     }

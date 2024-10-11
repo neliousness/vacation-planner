@@ -68,8 +68,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
+    // Retrofit
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
+    implementation(libs.converter.scalars)
 
     //Accompanist
     implementation (libs.accompanist.systemuicontroller)

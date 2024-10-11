@@ -11,13 +11,13 @@ import com.pulsar.vacationplanner.presentation.home.HomeEvent
 import com.pulsar.vacationplanner.util.Constants.locationItinerarys
 
 @Composable
-fun ItineraryListCard(title : String, itineraries: List<LocationItinerary>, onEvent: (HomeEvent) ->
+fun LocationListCard(title : String, itineraries: List<LocationItinerary>, onEvent: (HomeEvent) ->
 Unit) {
     Column {
         Title(title = title)
         LazyRow {
             items(itineraries) { item ->
-                ItineraryCard(data = item, onEvent = onEvent)
+                LocationCard(data = item, onEvent = onEvent)
             }
         }
     }
@@ -27,4 +27,4 @@ Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun ItineraryListCardPreview() = ItineraryListCard("Suggestions",locationItinerarys, {})
+fun LocationListCardPreview() = LocationListCard("Suggestions",locationItinerarys, {})
