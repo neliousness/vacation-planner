@@ -4,8 +4,8 @@ import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pulsar.vacationplanner.data.model.ItineraryRequest
-import com.pulsar.vacationplanner.domain.model.LocationItinerary
+import com.pulsar.vacationplanner.data.model.itinerary.ItineraryRequest
+import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 import com.pulsar.vacationplanner.domain.repository.ItineraryRepository
 import com.pulsar.vacationplanner.util.extensions.toLocationItinerary
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -24,13 +24,14 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
     private val _locationItineraries = MutableStateFlow<List<LocationItinerary>>(emptyList())
     val locationItineraries: StateFlow<List<LocationItinerary>> = _locationItineraries.asStateFlow()
 
+    private val _recentLocationItineraries = MutableStateFlow<List<LocationItinerary>>(emptyList())
+    val recentLocationItineraries: StateFlow<List<LocationItinerary>> = _recentLocationItineraries.asStateFlow()
+
     private val _isLoading = MutableStateFlow(true)
     val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     init {
-        getItinerary("Cape Town", 2)
-        getItinerary("Maputo", 2)
-        getItinerary("Greece", 2)
+        getPopularDestinations()
     }
 
     fun onEvent(event: HomeEvent) {
@@ -43,7 +44,7 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                 is HomeEvent.SearchItinerary -> {
                     val destination = event.destination
                     val days = event.days
-                    if (destination.isNotBlank() && (days.isNotBlank() && days.isDigitsOnly()) ) {
+                    if (destination.isNotBlank() && (days.isNotBlank() && days.isDigitsOnly())) {
                         getItinerary(destination, days.toInt(), true)
                     } else {
                         _uiEvent.emit(HomeEvent.Error("Please enter a valid destination and duration"))
@@ -55,7 +56,7 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
         }
     }
 
-    private fun getItinerary(destination: String, duration: Int, fromSearch: Boolean = false) {
+    private fun getItinerary(destination: String, duration: Int = 2, fromSearch: Boolean = false) {
         viewModelScope.launch {
             if (!fromSearch) {
                 _isLoading.value = true
@@ -98,6 +99,41 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                     if (!fromSearch) {
                         _isLoading.value = false
                     }
+                }
+
+        }
+    }
+
+    private fun getPopularDestinations() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            repository.getPopularDestinations()
+                .catch { e ->
+                    _uiEvent.emit(HomeEvent.Error(e.message ?: "An error occurred"))
+                    _isLoading.value = false
+                }
+                .collect { result ->
+                    if (result.isSuccess) {
+                        result.getOrNull()
+                            ?.let { destinations ->
+                                try {
+                                    destinations.items.popularDestinations.forEach { destination ->
+                                        getItinerary(destination = destination)
+                                    }
+                                } catch (e: Exception) {
+                                    Log.e(
+                                        "HomeViewModel",
+                                        "${e.message}"
+                                    )
+                                }
+                            }
+                    } else {
+                        Log.e(
+                            "HomeViewModel",
+                            "Error fetching itinerary: ${result.exceptionOrNull()?.message}"
+                        )
+                    }
+                        _isLoading.value = false
                 }
 
         }

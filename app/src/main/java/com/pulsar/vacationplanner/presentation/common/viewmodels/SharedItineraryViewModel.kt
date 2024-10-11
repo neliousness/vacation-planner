@@ -1,8 +1,8 @@
 package com.pulsar.vacationplanner.presentation.common.viewmodels
 
 import androidx.lifecycle.ViewModel
-import com.pulsar.vacationplanner.domain.model.ItineraryData
-import com.pulsar.vacationplanner.domain.model.LocationItinerary
+import com.pulsar.vacationplanner.domain.model.itinerary.ItineraryData
+import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

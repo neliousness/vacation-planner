@@ -1,9 +1,9 @@
 package com.pulsar.vacationplanner.util
 
-import com.pulsar.vacationplanner.domain.model.Activity
-import com.pulsar.vacationplanner.domain.model.ItineraryData
-import com.pulsar.vacationplanner.domain.model.Location
-import com.pulsar.vacationplanner.domain.model.LocationItinerary
+import com.pulsar.vacationplanner.domain.model.itinerary.Activity
+import com.pulsar.vacationplanner.domain.model.itinerary.ItineraryData
+import com.pulsar.vacationplanner.domain.model.itinerary.Location
+import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 
 object Constants {
 
@@ -18,6 +18,7 @@ object Constants {
 
     val dummyItineraryResponse = LocationItinerary(
         location = "Cape Town, South Africa",
+        country = null,
         itinerary = listOf(
             ItineraryData(
                 date = "2024-10-10T00:00:00.000Z",

@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.R
-import com.pulsar.vacationplanner.domain.model.Activity
+import com.pulsar.vacationplanner.domain.model.itinerary.Activity
 import com.pulsar.vacationplanner.presentation.home.HomeEvent
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
 import com.pulsar.vacationplanner.util.Constants.locationItinerarys

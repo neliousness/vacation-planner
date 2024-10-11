@@ -1,6 +1,6 @@
 package com.pulsar.vacationplanner.presentation.home
 
-import com.pulsar.vacationplanner.domain.model.LocationItinerary
+import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 
 sealed class HomeEvent {
     data class GoToItineraryDetails(val data: LocationItinerary) : HomeEvent()

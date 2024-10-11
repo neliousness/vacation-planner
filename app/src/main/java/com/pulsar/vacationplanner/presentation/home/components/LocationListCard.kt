@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.pulsar.vacationplanner.domain.model.LocationItinerary
+import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 import com.pulsar.vacationplanner.presentation.common.components.Title
 import com.pulsar.vacationplanner.presentation.home.HomeEvent
 import com.pulsar.vacationplanner.util.Constants.locationItinerarys

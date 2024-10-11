@@ -34,6 +34,7 @@ fun HomeScreen(
 ) {
 
     val locationItineraries by homeViewModel.locationItineraries.collectAsState()
+    val recentLocationItineraries by homeViewModel.locationItineraries.collectAsState()
     val isLoading by homeViewModel.isLoading.collectAsState()
     val context = LocalContext.current
 

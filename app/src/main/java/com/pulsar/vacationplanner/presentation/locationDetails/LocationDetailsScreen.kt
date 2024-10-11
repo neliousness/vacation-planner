@@ -1,5 +1,6 @@
 package com.pulsar.vacationplanner.presentation.locationDetails
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -63,6 +64,8 @@ fun LocationDetailsScreen(
     //endregion observables
 
     locationItinerary?.let { itinerary ->
+
+        Log.d("LocationDetailsScreen", "LocationDetailsScreen: $itinerary")
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -87,4 +87,12 @@ dependencies {
 
     // Joda time
     implementation(libs.joda.time)
+
+//    // Room components
+//    implementation ("androidx.room:room-runtime:2.5.0")
+//    kapt("androidx.room:room-compiler:2.5.0")
+//
+//
+//    // Coroutines support for Room
+//    implementation ("androidx.room:room-ktx:2.5.0")
 }
