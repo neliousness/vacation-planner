@@ -53,11 +53,3 @@ git clone https://github.com/neliousness/vacation-planner.git
 * **OSMDroid:** Mapping and location services
 * **Retrofit:** Network operations
 * **OkHttp:** HTTP client
-
-## Contributing
-
-If you would like to contribute to this project, please fork the repository and submit a pull request.
-
-## License
-
-This project is licensed under the [MIT License].
