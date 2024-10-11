@@ -23,11 +23,13 @@ Vacation Planner is an Android application that helps users plan their vacations
 
 1. **Clone the repository:**
 git clone https://github.com/neliousness/vacation-planner.git
-2. **Open the project in Android Studio:**
+2. checkout the develop branch
+3.  **Open the project in Android Studio:**
       Import the project into Android Studio by navigating to `File > Open` and selecting the project directory.
-3. **Build the project:**
+
+5. **Build the project:**
    Click on the "Build" menu and select "Make Project" to build the project.
-4. **Run the app:**
+5. **Run the app:**
    Connect your Android device or start an emulator. Click on the "Run" menu and select "Run 'app'" to launch the application.
 
 ## Usage
