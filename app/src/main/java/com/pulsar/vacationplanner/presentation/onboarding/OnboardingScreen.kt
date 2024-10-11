@@ -32,15 +32,11 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun OnboardingScreen(onEvent:(OnBoardingEvent) -> Unit, navHostController: NavHostController) {
-
-
-    val viewModel : OnboardingViewModel = koinViewModel()
-
+fun OnboardingScreen(viewModel: OnboardingViewModel, navHostController: NavHostController) {
 
     //Observables
     LaunchedEffect(key1 = Unit) {
-        viewModel.uiEvent.collectLatest { event -> 
+        viewModel.uiEvent.collectLatest { event ->
             when(event)
             {
                 is OnBoardingEvent.OnBoardingComplete -> {
@@ -104,9 +100,7 @@ fun OnboardingScreen(onEvent:(OnBoardingEvent) -> Unit, navHostController: NavHo
                     onClick = {
                         scope.launch {
                             if (pagerState.currentPage == 2) {
-                                //TODO - go to main screen
-                                Log.d("here", "fire")
-                                onEvent(OnBoardingEvent.OnBoardingComplete)
+                                viewModel.onEvent(OnBoardingEvent.OnBoardingComplete)
                             } else {
                                 pagerState.animateScrollToPage(
                                     page = pagerState.currentPage + 1

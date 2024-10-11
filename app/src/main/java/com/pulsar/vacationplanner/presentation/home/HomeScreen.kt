@@ -1,22 +1,66 @@
 package com.pulsar.vacationplanner.presentation.home
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.pulsar.vacationplanner.presentation.common.components.Header
+import com.pulsar.vacationplanner.presentation.common.components.InputField
+import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
+import com.pulsar.vacationplanner.presentation.home.components.ItineraryListCard
+import com.pulsar.vacationplanner.presentation.navgraph.Route
+import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import kotlinx.coroutines.flow.collectLatest
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(
+    homeViewModel: HomeViewModel,
+    sharedLocationItineraryViewModel: SharedLocationItineraryViewModel,
+    navHostController: NavHostController
+) {
+    LaunchedEffect(key1 = Unit) {
+        homeViewModel.uiEvent.collectLatest { event ->
+            when (event) {
+                is HomeEvent.ItineraryDetails -> {
+                    sharedLocationItineraryViewModel.setSelectedLocationItinerary(event.data)
+                    navHostController.navigate(
+                        Route.DetailsScreen
+                            .route
+                    )
+                }
+
+                is HomeEvent.SearchItinerary -> TODO()
+            }
+        }
+
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(18.dp)
+            .padding(top = 32.dp, start = 24.dp, end = 24.dp)
     ) {
         Header()
+        Spacer(modifier = Modifier.size(60.dp))
+        InputField(onTextChanged = {}, "Search")
+        Spacer(modifier = Modifier.size(30.dp))
+        ItineraryListCard(
+            "Popular Destinations",
+            locationItinerarys,
+            onEvent = homeViewModel::onEvent
+        )
+        Spacer(modifier = Modifier.size(30.dp))
+        ItineraryListCard("Suggestions", locationItinerarys, onEvent = homeViewModel::onEvent)
+
     }
 }
 
@@ -24,11 +68,5 @@ fun HomeScreen() {
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(18.dp)
-    ) {
-        Header()
-    }
+    HomeScreen(koinViewModel(),koinViewModel(), rememberNavController())
 }

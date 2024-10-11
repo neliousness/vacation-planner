@@ -6,4 +6,5 @@ sealed class Route(open val route: String, arguments: List<NamedNavArgument> = e
 
     data object OnBoardingScreen : Route(route = "onBoardingScreen")
     data object HomeScreen : Route(route = "homeScreen")
+    data object DetailsScreen : Route(route = "detailsScreen")
 }
