@@ -6,6 +6,8 @@ import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationRequ
 import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationResponse
 import com.pulsar.vacationplanner.data.remote.LocationItineraryApiService
 import com.pulsar.vacationplanner.domain.repository.ItineraryRepository
+import com.pulsar.vacationplanner.util.Constants.DESTINATION_RETRY_ATTEMPTS
+import com.pulsar.vacationplanner.util.Constants.ITINERARY_RETRY_ATTEMPTS
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -13,12 +15,17 @@ import kotlinx.coroutines.flow.flow
 
 class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiService) :
     ItineraryRepository {
+
+    /**
+     * This method fetches itineraties from an AI API and emits the result as a flow. However, given the
+     * Inaccuracies presented by the selected model. occasionally the result may become corrupt. therefore this method attempts to fectch
+     */
     override fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse?>> =
         flow {
             var retryCount = 0
             var itineraryResponse: ItineraryResponse? = null
 
-            while (retryCount < 5 && itineraryResponse == null) {
+            while (retryCount < ITINERARY_RETRY_ATTEMPTS && itineraryResponse == null) {
                 try {
                     val response = apiService.getLocationItinerary(request)
                     if (response.isSuccessful && response.body() != null) {
@@ -47,7 +54,7 @@ class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiServic
             var retryCount = 0
             var popularList: DestinationResponse? = null
 
-            while (retryCount < 5 && popularList == null) {
+            while (retryCount < DESTINATION_RETRY_ATTEMPTS && popularList == null) {
                 try {
                     val response = apiService.getDestinations(request)
                     if (response.isSuccessful && response.body() != null) {

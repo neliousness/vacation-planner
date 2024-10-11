@@ -23,14 +23,10 @@ fun Header(title: String = "Explore the world", fontSize: TextUnit = 28.sp) {
             .fillMaxWidth()
             .height(60.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Absolute
-            .SpaceBetween,
+        horizontalArrangement = Arrangement.Absolute.SpaceBetween,
     ) {
         Text(
-            text = title,
-            color = Color.Black,
-            fontSize = fontSize,
-            fontWeight = FontWeight.Bold
+            text = title, color = Color.Black, fontSize = fontSize, fontWeight = FontWeight.Bold
         )
     }
 }

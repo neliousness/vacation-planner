@@ -1,6 +1,7 @@
 package com.pulsar.vacationplanner
 
 import android.app.Application
+import com.pulsar.vacationplanner.di.helperModule
 import com.pulsar.vacationplanner.di.networkModule
 import com.pulsar.vacationplanner.di.presentationModule
 import org.koin.android.ext.koin.androidContext
@@ -14,8 +15,7 @@ class VacationPlannerApplication : Application() {
         startKoin{
             androidLogger()
             androidContext(this@VacationPlannerApplication)
-            modules(presentationModule, networkModule)
+            modules(presentationModule, networkModule, helperModule)
         }
     }
-
 }

@@ -7,7 +7,7 @@ import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationResp
 import kotlinx.coroutines.flow.Flow
 
 interface ItineraryRepository {
-     fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse?>>
+    fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse?>>
 
-     fun getDestinations(request: DestinationRequest): Flow<Result<DestinationResponse?>>
+    fun getDestinations(request: DestinationRequest): Flow<Result<DestinationResponse?>>
 }

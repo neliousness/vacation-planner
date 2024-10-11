@@ -25,7 +25,8 @@ fun Title(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(60.dp).padding(start = startPadding),
+            .height(60.dp)
+            .padding(start = startPadding),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start,
     ) {

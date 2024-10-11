@@ -28,7 +28,8 @@ import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.domain.model.itinerary.ItineraryData
 import com.pulsar.vacationplanner.presentation.locationDetails.LocationDetailsEvent
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.Constants.DATE_TIME_PATTERN
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.util.Locale
@@ -37,14 +38,14 @@ import java.util.Locale
 fun ItineraryCard(data: ItineraryData, onEvent: (LocationDetailsEvent) -> Unit) {
 
 
-    val formatter = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    val formatter = DateTimeFormat.forPattern(DATE_TIME_PATTERN)
         .withZoneUTC()
 
     val dateTime = remember(data.date) {
         try {
             formatter.parseDateTime(data.date)
         } catch (e: IllegalArgumentException) {
-            DateTime.now() // or some default DateTime value
+            DateTime.now()
         }
     }
 
@@ -121,7 +122,6 @@ fun ItineraryCard(data: ItineraryData, onEvent: (LocationDetailsEvent) -> Unit) 
                 fontWeight = FontWeight.Medium,
                 modifier = Modifier
                     .padding(16.dp)
-                // Add bottom padding
             )
         }
     }

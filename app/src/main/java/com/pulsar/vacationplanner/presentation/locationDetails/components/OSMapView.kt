@@ -17,11 +17,9 @@ fun OSMapView(
     longitude: Double = 0.0,
     zoomLevel: Double = 15.0
 ) {
-    // Setting up the configuration for OSMDroid
     Configuration.getInstance()
         .load(context, context.getSharedPreferences("osmdroid", Context.MODE_PRIVATE))
 
-    // Wrapping the MapView inside AndroidView
     AndroidView(
         factory = { ctx ->
             org.osmdroid.views.MapView(ctx)

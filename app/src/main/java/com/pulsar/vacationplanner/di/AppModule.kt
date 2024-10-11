@@ -8,6 +8,8 @@ import com.pulsar.vacationplanner.presentation.locationDetails.LocationDetailsVi
 import com.pulsar.vacationplanner.presentation.home.HomeViewModel
 import com.pulsar.vacationplanner.presentation.itineraryDetails.ItineraryDetailsViewModel
 import com.pulsar.vacationplanner.presentation.onboarding.OnboardingViewModel
+import com.pulsar.vacationplanner.util.Constants.BASE_URL
+import com.pulsar.vacationplanner.util.PreferencesHelper
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -15,13 +17,12 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 val presentationModule = module {
-
     //region viewModels
     factory { OnboardingViewModel() }
     factory { HomeViewModel(get()) }
     factory { LocationDetailsViewModel() }
     factory { ItineraryDetailsViewModel() }
-    viewModel { SharedLocationItineraryViewModel() }
+    viewModel { SharedLocationItineraryViewModel(get()) }
     //endregion viewModels
 }
 
@@ -30,7 +31,7 @@ val networkModule = module {
     //region network
     single {
         Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:8080/") // Your base URL
+            .baseUrl(BASE_URL) // Your base URL
             .addConverterFactory(GsonConverterFactory.create()) // Or MoshiConverterFactory
             .addConverterFactory(ScalarsConverterFactory.create())
             .build()
@@ -38,4 +39,8 @@ val networkModule = module {
     single { get<Retrofit>().create(LocationItineraryApiService::class.java) }
     single<ItineraryRepository> { ItineraryRepositoryImpl(get()) }
     //endregion network
+}
+
+val helperModule = module {
+    single { PreferencesHelper(get()) }
 }

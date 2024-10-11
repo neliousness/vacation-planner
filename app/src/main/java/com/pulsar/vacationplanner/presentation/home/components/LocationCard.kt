@@ -24,13 +24,16 @@ import androidx.compose.ui.unit.dp
 import com.pulsar.vacationplanner.R
 import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 import com.pulsar.vacationplanner.presentation.home.HomeEvent
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 
 @Composable
-fun LocationCard(data: LocationItinerary, onEvent:(HomeEvent) -> Unit) {
-    Card (modifier = Modifier.padding(8.dp).clickable {
-        onEvent(HomeEvent.GoToItineraryDetails(data))
-    }, elevation = CardDefaults.cardElevation(4.dp)) {
+fun LocationCard(data: LocationItinerary, onEvent: (HomeEvent) -> Unit) {
+    Card(modifier = Modifier
+        .padding(8.dp)
+        .clickable {
+            onEvent(HomeEvent.GoToItineraryDetails(data))
+        }, elevation = CardDefaults.cardElevation(4.dp)
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -53,8 +56,8 @@ fun LocationCard(data: LocationItinerary, onEvent:(HomeEvent) -> Unit) {
                 color = Color.White,
                 modifier = Modifier
                     .padding(16.dp)
-                    .align(Alignment.BottomStart) // Align to bottom center
-                    .padding(bottom = 8.dp)     // Add bottom padding
+                    .align(Alignment.BottomStart)
+                    .padding(bottom = 8.dp)
             )
         }
     }

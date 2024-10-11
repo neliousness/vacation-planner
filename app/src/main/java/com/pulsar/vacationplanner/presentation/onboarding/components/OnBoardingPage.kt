@@ -14,15 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.R
 import com.pulsar.vacationplanner.presentation.onboarding.Page
-import com.pulsar.vacationplanner.ui.theme.Dimens.MediumPadding1
 import com.pulsar.vacationplanner.ui.theme.Dimens.MediumPadding2
 import com.pulsar.vacationplanner.ui.theme.VacationPlannerTheme
 

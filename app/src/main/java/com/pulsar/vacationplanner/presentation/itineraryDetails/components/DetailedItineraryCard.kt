@@ -27,12 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.R
 import com.pulsar.vacationplanner.domain.model.itinerary.Activity
-import com.pulsar.vacationplanner.presentation.home.HomeEvent
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 
 @Composable
-fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
+fun DetailedItineraryCard(data: Activity) {
 
     Card(
         modifier = Modifier
@@ -59,9 +58,11 @@ fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 24.sp,
-                        modifier = Modifier
-                            .padding(start = 10.dp, top = 8.dp, bottom = 8.dp)     // Add bottom
-                        // padding
+                        modifier = Modifier.padding(
+                                start = 10.dp,
+                                top = 8.dp,
+                                bottom = 8.dp
+                            )     // Add bottom
                     )
                 }
 
@@ -71,7 +72,9 @@ fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
                     Image(
                         painter = painterResource(R.drawable.ic_clock),
                         contentDescription = "Clock",
-                        modifier = Modifier.height(28.dp).padding(start = 8.dp),
+                        modifier = Modifier
+                            .height(28.dp)
+                            .padding(start = 8.dp),
                     )
                     Spacer(modifier = Modifier.size(5.dp))
                     Text(
@@ -79,17 +82,17 @@ fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
                         color = MiltaryGreen,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .padding(16.dp)
-                        // Add bottom padding
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
-                Row (verticalAlignment = Alignment.CenterVertically) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
 
                     Image(
                         painter = painterResource(R.drawable.ic_food),
                         contentDescription = "Clock",
-                        modifier = Modifier.height(28.dp).padding(start = 8.dp),
+                        modifier = Modifier
+                            .height(28.dp)
+                            .padding(start = 8.dp),
                     )
                     Spacer(modifier = Modifier.size(5.dp))
                     Text(
@@ -97,9 +100,7 @@ fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
                         color = MiltaryGreen,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        modifier = Modifier
-                            .padding(16.dp)
-                        // Add bottom padding
+                        modifier = Modifier.padding(16.dp)
                     )
                 }
             }
@@ -111,6 +112,5 @@ fun DetailedItineraryCard(data: Activity, onEvent: (HomeEvent) -> Unit) {
 @Preview
 @Composable
 fun DetailedItineraryCardPreview() {
-
-    DetailedItineraryCard(locationItinerarys[0].itinerary[0].activities[0], onEvent = {})
+    DetailedItineraryCard(locationItinerarys[0].itinerary[0].activities[0])
 }

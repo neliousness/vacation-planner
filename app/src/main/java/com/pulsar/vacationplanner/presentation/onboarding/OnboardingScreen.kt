@@ -1,6 +1,5 @@
 package com.pulsar.vacationplanner.presentation.onboarding
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,23 +21,27 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.loc.newsapp.presentation.onboarding.components.OnBoardingPage
-import com.pulsar.vacationplanner.presentation.onboarding.components.PagerIndicator
 import com.pulsar.vacationplanner.presentation.common.components.NewsTextButton
 import com.pulsar.vacationplanner.presentation.common.components.NextButton
+import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
 import com.pulsar.vacationplanner.presentation.navgraph.Route
+import com.pulsar.vacationplanner.presentation.onboarding.components.PagerIndicator
 import com.pulsar.vacationplanner.ui.theme.Dimens.MediumPadding2
+import com.pulsar.vacationplanner.util.Constants.ONBOARDED
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun OnboardingScreen(viewModel: OnboardingViewModel, navHostController: NavHostController) {
+fun OnboardingScreen(
+    viewModel: OnboardingViewModel,
+    sharedLocationItineraryViewModel: SharedLocationItineraryViewModel,
+    navHostController: NavHostController
+) {
 
     //Observables
     LaunchedEffect(key1 = Unit) {
         viewModel.uiEvent.collectLatest { event ->
-            when(event)
-            {
+            when (event) {
                 is OnBoardingEvent.OnBoardingComplete -> {
                     navHostController.navigate(Route.HomeScreen.route)
                 }
@@ -81,7 +84,6 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, navHostController: NavHostC
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val scope = rememberCoroutineScope()
-                //Hide the button when the first element of the list is empty
                 if (buttonsState.value[0].isNotEmpty()) {
                     NewsTextButton(
                         text = buttonsState.value[0],
@@ -100,6 +102,7 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, navHostController: NavHostC
                     onClick = {
                         scope.launch {
                             if (pagerState.currentPage == 2) {
+                                sharedLocationItineraryViewModel.saveData(ONBOARDED, true)
                                 viewModel.onEvent(OnBoardingEvent.OnBoardingComplete)
                             } else {
                                 pagerState.animateScrollToPage(
@@ -113,5 +116,4 @@ fun OnboardingScreen(viewModel: OnboardingViewModel, navHostController: NavHostC
         }
         Spacer(modifier = Modifier.weight(0.5f))
     }
-
 }

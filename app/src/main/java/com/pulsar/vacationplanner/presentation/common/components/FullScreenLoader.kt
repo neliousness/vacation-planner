@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.pulsar.vacationplanner.util.Constants.EMPTY
 
 @Composable
 fun FullScreenLoader() {
@@ -29,7 +30,7 @@ fun FullScreenLoader() {
         modifier = Modifier
             .fillMaxSize()
             .background(color = Color.DarkGray.copy(alpha = 0.5f)),
-        contentAlignment = Alignment.Center // Center the loader
+        contentAlignment = Alignment.Center
     ) {
         CircularLoader()
     }
@@ -37,33 +38,29 @@ fun FullScreenLoader() {
 
 @Composable
 fun CircularLoader() {
-    // Define animation transition
-    val infiniteTransition = rememberInfiniteTransition(label = "")
+    val infiniteTransition = rememberInfiniteTransition(label = EMPTY)
 
-    // Animate the rotation angle
     val rotation by infiniteTransition.animateFloat(
         initialValue = 0f,
         targetValue = 360f,
         animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1000, easing = LinearEasing),
             repeatMode = RepeatMode.Restart
-        ), label = ""
+        ), label = EMPTY
     )
 
-    // Canvas to draw the arc (loader)
     Canvas(
         modifier = Modifier
             .size(100.dp)
-            .rotate(rotation) // Apply rotation to the whole canvas
+            .rotate(rotation)
     ) {
         val strokeWidth = 8f
         val arcRadius = size.minDimension / 2 - strokeWidth / 2
 
-        // Draw rotating arc (loader)
         drawArc(
             color = Color.White,
             startAngle = 0f,
-            sweepAngle = 270f, // Create an arc of 270 degrees (almost a full circle)
+            sweepAngle = 270f,
             useCenter = false,
             style = Stroke(width = strokeWidth),
             size = Size(arcRadius * 2, arcRadius * 2),

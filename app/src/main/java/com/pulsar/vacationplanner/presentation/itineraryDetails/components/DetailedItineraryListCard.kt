@@ -12,18 +12,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.domain.model.itinerary.Activity
 import com.pulsar.vacationplanner.presentation.common.components.Title
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 
 @Composable
 fun DetailedItineraryListCard(itinerary: List<Activity>) {
     Box(modifier = Modifier.padding(top = 10.dp)) {
         Title(title = "What you'll be doing", fontSize = 24.sp)
     }
-        LazyColumn {
-            items(itinerary) { item ->
-                DetailedItineraryCard(data = item, onEvent = {})
-            }
+    LazyColumn {
+        items(itinerary) { item ->
+            DetailedItineraryCard(data = item)
         }
+    }
 }
 
 
@@ -36,7 +36,7 @@ fun DetailedItineraryListCardPreview() {
         Title(title = "Itinerary")
         LazyColumn {
             items(data) { item ->
-                DetailedItineraryCard(data = item, onEvent = {})
+                DetailedItineraryCard(data = item)
             }
         }
     }

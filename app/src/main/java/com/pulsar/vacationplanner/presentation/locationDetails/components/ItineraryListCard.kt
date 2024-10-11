@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.domain.model.itinerary.ItineraryData
 import com.pulsar.vacationplanner.presentation.common.components.Title
 import com.pulsar.vacationplanner.presentation.locationDetails.LocationDetailsEvent
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 
 @Composable
 fun ItineraryListCard(itinerary: List<ItineraryData>, onEvent: (LocationDetailsEvent) -> Unit) {

@@ -50,6 +50,7 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                 is HomeEvent.GoToItineraryDetails -> {
                     _uiEvent.emit(HomeEvent.GoToItineraryDetails(event.data))
                 }
+
                 is HomeEvent.SearchItinerary -> {
                     val destination = event.destination
                     val days = event.days
@@ -60,10 +61,8 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                         _uiEvent.emit(HomeEvent.Error("Please enter a valid destination and duration"))
                     }
                 }
+
                 is HomeEvent.Error -> _uiEvent.emit(HomeEvent.Error("An error occurred"))
-                else -> {
-                    // Do nothing
-                }
             }
         }
     }

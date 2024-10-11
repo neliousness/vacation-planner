@@ -60,7 +60,6 @@ fun LocationDetailsScreen(
             }
         }
     }
-
     //endregion observables
 
     locationItinerary?.let { itinerary ->

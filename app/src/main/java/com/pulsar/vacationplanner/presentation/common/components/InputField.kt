@@ -21,11 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
+import com.pulsar.vacationplanner.util.Constants.EMPTY
 
 @Composable
 fun InputField(onTextChanged: (name: String) -> Unit, label: String = "Enter your name") {
     var currentValue by remember {
-        mutableStateOf("")
+        mutableStateOf(EMPTY)
     }
     val localFocusManager = LocalFocusManager.current
 

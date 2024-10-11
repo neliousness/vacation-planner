@@ -1,5 +1,6 @@
 package com.pulsar.vacationplanner.presentation.home.components
 
+import ShimmerLocationCard
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
 import com.pulsar.vacationplanner.presentation.common.components.Title
 import com.pulsar.vacationplanner.presentation.home.HomeEvent
-import com.pulsar.vacationplanner.util.Constants.locationItinerarys
+import com.pulsar.vacationplanner.util.DummyData.locationItinerarys
 
 @Composable
 fun LocationListCard(
@@ -32,12 +33,11 @@ fun LocationListCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         if (isLoading) {
-            // Display shimmer while loading
             LazyRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
-                modifier = Modifier.fillMaxWidth() // Optional: Make shimmer fill width
+                modifier = Modifier.fillMaxWidth()
             ) {
-                items(20) { // Adjust the number of shimmer items as needed
+                items(20) {
                     ShimmerLocationCard()
                 }
             }
