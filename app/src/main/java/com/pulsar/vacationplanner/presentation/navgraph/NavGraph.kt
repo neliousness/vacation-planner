@@ -19,7 +19,7 @@ fun NavGraph() {
     val sharedLocationItineraryViewModel: SharedLocationItineraryViewModel = koinViewModel()
     val isOnboarded by sharedLocationItineraryViewModel.isOnboarded.collectAsState()
 
-    val startDestination = if (isOnboarded) Route.OnBoardingScreen.route else Route.HomeScreen.route
+    val startDestination = if (isOnboarded) Route.HomeScreen.route else Route.OnBoardingScreen.route
 
     NavHost(navController = navController, startDestination = startDestination) {
 
