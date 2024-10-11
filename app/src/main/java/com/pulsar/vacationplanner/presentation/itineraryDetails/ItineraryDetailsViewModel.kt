@@ -1,4 +1,4 @@
-package com.pulsar.vacationplanner.presentation.details
+package com.pulsar.vacationplanner.presentation.itineraryDetails
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -6,16 +6,16 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class DetailsViewModel : ViewModel() {
-    private val _uiEvent = MutableSharedFlow<DetailsEvent>()
+class ItineraryDetailsViewModel : ViewModel() {
+    private val _uiEvent = MutableSharedFlow<ItineraryDetailsEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
 
 
-    fun onEvent(event: DetailsEvent) {
+    fun onEvent(event: ItineraryDetailsEvent) {
         viewModelScope.launch {
             when (event) {
-                is DetailsEvent.GoBack -> {
-                    _uiEvent.emit(DetailsEvent.GoBack)
+                is ItineraryDetailsEvent.GoBack -> {
+                    _uiEvent.emit(ItineraryDetailsEvent.GoBack)
                 }
             }
         }

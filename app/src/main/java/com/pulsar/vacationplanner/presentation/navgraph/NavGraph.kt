@@ -5,8 +5,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.pulsar.vacationplanner.presentation.common.viewmodels.SharedLocationItineraryViewModel
-import com.pulsar.vacationplanner.presentation.details.DetailsScreen
+import com.pulsar.vacationplanner.presentation.locationDetails.LocationDetailsScreen
 import com.pulsar.vacationplanner.presentation.home.HomeScreen
+import com.pulsar.vacationplanner.presentation.itineraryDetails.ItineraryDetailsScreen
 import com.pulsar.vacationplanner.presentation.onboarding.OnboardingScreen
 import org.koin.androidx.compose.koinViewModel
 
@@ -27,8 +28,12 @@ fun NavGraph(
             HomeScreen(koinViewModel(), sharedLocationItineraryViewModel, navController)
         }
 
-        composable(route = Route.DetailsScreen.route) {
-            DetailsScreen(koinViewModel(),sharedLocationItineraryViewModel, navController)
+        composable(route = Route.LocationDetailsScreen.route) {
+            LocationDetailsScreen(koinViewModel(),sharedLocationItineraryViewModel, navController)
+        }
+
+        composable(route = Route.ItineraryDetailsScreen.route) {
+            ItineraryDetailsScreen(koinViewModel(),sharedLocationItineraryViewModel, navController)
         }
     }
 }

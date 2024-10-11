@@ -42,17 +42,13 @@ fun HomeScreen(
             when (event) {
                 is HomeEvent.GoToItineraryDetails -> {
                     sharedLocationItineraryViewModel.setSelectedLocationItinerary(event.data)
-                    navHostController.navigate(
-                        Route.DetailsScreen
-                            .route
-                    )
+                    navHostController.navigate(Route.LocationDetailsScreen.route)
                 }
 
                 is HomeEvent.SearchItinerary -> {}
                 is HomeEvent.Error -> {
                     withContext(Dispatchers.Main) {
-                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -77,7 +73,7 @@ fun HomeScreen(
         )
         Spacer(modifier = Modifier.size(30.dp))
         LocationListCard(
-            "Suggestions",
+            "Recent Locations",
             isLoading,
             locationItineraries, onEvent = homeViewModel::onEvent
         )

@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface ItineraryRepository {
      fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse?>>
+
+     fun getPopularDestinations(): Flow<Result<List<String>?>>
 }

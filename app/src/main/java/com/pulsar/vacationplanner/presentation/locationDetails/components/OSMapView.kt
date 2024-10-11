@@ -1,4 +1,4 @@
-package com.pulsar.vacationplanner.presentation.details.components
+package com.pulsar.vacationplanner.presentation.locationDetails.components
 
 
 import android.content.Context

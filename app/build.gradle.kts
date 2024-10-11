@@ -82,6 +82,9 @@ dependencies {
     implementation(libs.koin.androidx.compose)
 
     //Open Street map
-    implementation("org.osmdroid:osmdroid-android:6.1.18") // Replace with the latest version
-    implementation("org.osmdroid:osmdroid-mapsforge:6.1.18") // Optional for offline map tiles
+    implementation(libs.osmdroid.android)
+    implementation(libs.osmdroid.mapsforge)
+
+    // Joda time
+    implementation(libs.joda.time)
 }

@@ -39,4 +39,33 @@ class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiServic
         }.catch { e ->
             emit(Result.failure(e))
         }
+
+    override fun getPopularDestinations(): Flow<Result<List<String>?>> =
+        flow {
+            var retryCount = 0
+            var popularList: List<String>? = null
+
+            while (retryCount < 5 && popularList == null) {
+                try {
+                    val response = apiService.getPopularDestinations()
+                    if (response.isSuccessful && response.body() != null) {
+                        popularList = response.body()!!
+                        emit(Result.success(popularList))
+                    } else {
+                        emit(Result.failure(Exception("API request failed with code ${response.code()}")))
+                    }
+                } catch (e: Exception) {
+                    emit(Result.failure(e))
+                }
+                retryCount++
+                if (popularList == null) {
+                    delay(1000) // Delay before retrying
+                }
+            }
+            if (popularList == null) {
+                emit(Result.failure(Exception("Failed to fetch itinerary after 5 attempts")))
+            }
+        }.catch { e ->
+            emit(Result.failure(e))
+        }
 }

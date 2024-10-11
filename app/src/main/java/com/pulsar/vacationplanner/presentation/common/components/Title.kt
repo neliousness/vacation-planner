@@ -31,7 +31,7 @@ fun Title(
     ) {
         Text(
             text = title,
-            color = MiltaryGreen,
+            color = MiltaryGreen.copy(alpha = 0.75f),
             fontSize = fontSize,
             fontWeight = FontWeight.Medium
         )
