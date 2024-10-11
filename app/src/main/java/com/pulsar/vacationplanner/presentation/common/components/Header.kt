@@ -28,8 +28,8 @@ fun Header(title: String = "Explore the world") {
         Text(
             text = title,
             color = Color.Black,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium
+            fontSize = 28.sp,
+            fontWeight = FontWeight.Bold
         )
     }
 }

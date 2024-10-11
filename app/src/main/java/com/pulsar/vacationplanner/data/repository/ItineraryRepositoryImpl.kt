@@ -6,11 +6,12 @@ import com.pulsar.vacationplanner.data.remote.LocationItineraryApiService
 import com.pulsar.vacationplanner.domain.repository.ItineraryRepository
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 
 class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiService) :
     ItineraryRepository {
-    override fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse>> =
+    override fun getLocationItinerary(request: ItineraryRequest): Flow<Result<ItineraryResponse?>> =
         flow {
             var retryCount = 0
             var itineraryResponse: ItineraryResponse? = null
@@ -35,5 +36,7 @@ class ItineraryRepositoryImpl(private val apiService: LocationItineraryApiServic
             if (itineraryResponse == null) {
                 emit(Result.failure(Exception("Failed to fetch itinerary after 5 attempts")))
             }
+        }.catch { e ->
+            emit(Result.failure(e))
         }
 }

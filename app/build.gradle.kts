@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.play.services.maps)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,4 +80,8 @@ dependencies {
     //Koin
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+
+    //Open Street map
+    implementation("org.osmdroid:osmdroid-android:6.1.18") // Replace with the latest version
+    implementation("org.osmdroid:osmdroid-mapsforge:6.1.18") // Optional for offline map tiles
 }
