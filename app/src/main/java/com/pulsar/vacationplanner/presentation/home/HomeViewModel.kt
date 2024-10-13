@@ -1,23 +1,28 @@
 package com.pulsar.vacationplanner.presentation.home
 
-import android.util.Log
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pulsar.vacationplanner.data.model.destinations.DestinationRequest
 import com.pulsar.vacationplanner.data.model.itinerary.ItineraryRequest
-import com.pulsar.vacationplanner.data.model.popularDestinations.DestinationRequest
+import com.pulsar.vacationplanner.domain.common.Result
+import com.pulsar.vacationplanner.domain.exceptions.DestinationFetchException
+import com.pulsar.vacationplanner.domain.exceptions.ItineraryFetchException
 import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
-import com.pulsar.vacationplanner.domain.repository.ItineraryRepository
+import com.pulsar.vacationplanner.domain.usecases.FetchDestinationsUseCase
+import com.pulsar.vacationplanner.domain.usecases.SearchItineraryUseCase
 import com.pulsar.vacationplanner.util.extensions.toLocationItinerary
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
+class HomeViewModel(
+    private val getItinerariesUseCase: SearchItineraryUseCase,
+    private val fetchDestinationsUseCase: FetchDestinationsUseCase
+) : ViewModel() {
 
     private val _uiEvent = MutableSharedFlow<HomeEvent>()
     val uiEvent = _uiEvent.asSharedFlow()
@@ -62,7 +67,9 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                     }
                 }
 
-                is HomeEvent.Error -> _uiEvent.emit(HomeEvent.Error("An error occurred"))
+                else -> {
+                    // Do nothing
+                }
             }
         }
     }
@@ -75,25 +82,24 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
     ) {
         viewModelScope.launch {
             if (!fromSearch) {
-                if (isAffordable) {
-                    _isAffordableLoading.value = true
-                } else {
-                    _isPopularLoading.value = true
-                }
+                if (isAffordable) _isAffordableLoading.value = true else _isPopularLoading.value =
+                    true
             }
+
             val request = ItineraryRequest(destination, duration)
 
-            repository.getLocationItinerary(request)
-                .catch { e ->
-                    _uiEvent.emit(HomeEvent.Error(e.message ?: "An error occurred"))
-                    _isAffordableLoading.value = false
-                }
+            getItinerariesUseCase(request)
                 .collect { result ->
-                    if (result.isSuccess) {
-                        result.getOrNull()
-                            ?.let {
-                                try {
-                                    val locationItinerary = it.toLocationItinerary()
+                    when (result) {
+                        is Result.Loading -> {
+                            if (fromSearch) {
+                                _isLoadingSearch.value = true
+                            }
+                        }
+
+                        is Result.Success -> {
+                            result.data?.let { itineraryResponse ->
+                                itineraryResponse.toLocationItinerary()?.let { locationItinerary ->
                                     if (!fromSearch) {
                                         if (isAffordable) {
                                             _affordableLocationItineraries.value += locationItinerary
@@ -108,68 +114,69 @@ class HomeViewModel(private val repository: ItineraryRepository) : ViewModel() {
                                             )
                                         )
                                     }
-                                } catch (e: Exception) {
-                                    _isLoadingSearch.value = false
-                                    Log.e(
-                                        "HomeViewModel",
-                                        "${e.message}"
+                                }
+                            }
+                        }
+
+                        is Result.Error -> {
+                            when (result.exception) {
+                                is ItineraryFetchException -> {
+                                    if (fromSearch) {
+                                        _isLoadingSearch.value = false
+                                        _uiEvent.emit(
+                                            HomeEvent.Error(
+                                                result.exception.message ?: "An error occurred"
+                                            )
+                                        )
+                                    }
+                                }
+
+                                is DestinationFetchException -> {
+                                    _uiEvent.emit(
+                                        HomeEvent.Error(
+                                            result.exception.message ?: "An error occurred"
+                                        )
                                     )
                                 }
                             }
-                    } else {
-                        Log.e(
-                            "HomeViewModel",
-                            "Error fetching itinerary: ${result.exceptionOrNull()?.message}"
-                        )
-                    }
-                    if (!fromSearch) {
-                        if (isAffordable) {
-                            _isAffordableLoading.value = false
-                        } else {
-                            _isPopularLoading.value = false
                         }
+                    }
 
+                    if (!fromSearch) {
+                        if (isAffordable) _isAffordableLoading.value =
+                            false else _isPopularLoading.value = false
                     }
                 }
-
         }
     }
+
 
     private fun getDestinations(isAffordable: Boolean = false) {
         viewModelScope.launch {
-            _isAffordableLoading.value = true
-            repository.getDestinations(request = DestinationRequest(isAffordable = isAffordable))
-                .catch { e ->
-                    _uiEvent.emit(HomeEvent.Error(e.message ?: "An error occurred"))
-                    _isAffordableLoading.value = false
-                }
+            fetchDestinationsUseCase(DestinationRequest(isAffordable = isAffordable))
                 .collect { result ->
-                    if (result.isSuccess) {
-                        result.getOrNull()
-                            ?.let { destinations ->
-                                try {
-                                    destinations.items.popularDestinations.forEach { destination ->
-                                        getItinerary(
-                                            destination = destination,
-                                            isAffordable = isAffordable
-                                        )
-                                    }
-                                } catch (e: Exception) {
-                                    Log.e(
-                                        "HomeViewModel",
-                                        "${e.message}"
-                                    )
-                                }
-                            }
-                    } else {
-                        Log.e(
-                            "HomeViewModel",
-                            "Error fetching itinerary: ${result.exceptionOrNull()?.message}"
-                        )
-                    }
-                    _isAffordableLoading.value = false
-                }
+                    when (result) {
+                        is Result.Loading -> {
+                            _isAffordableLoading.value = true
+                        }
 
+                        is Result.Success -> {
+                            result.data?.items?.popularDestinations?.forEach { destination ->
+                                getItinerary(destination = destination, isAffordable = isAffordable)
+                            }
+                        }
+
+                        is Result.Error -> {
+                            _uiEvent.emit(
+                                HomeEvent.Error(
+                                    result.exception.message ?: "Error fetching destinations"
+                                )
+                            )
+                            _isAffordableLoading.value = false
+                        }
+                    }
+                }
         }
     }
+
 }

@@ -61,7 +61,6 @@ fun HomeScreen(
                 }
             }
         }
-
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -93,7 +92,6 @@ fun HomeScreen(
         if (isLoadingSearch) {
             FullScreenLoader()
         }
-
     }
 }
 

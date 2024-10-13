@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -34,8 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pulsar.vacationplanner.R
 import com.pulsar.vacationplanner.presentation.home.HomeEvent
+import com.pulsar.vacationplanner.ui.theme.Dimens.SearchInputCornerRadius
 import com.pulsar.vacationplanner.ui.theme.MiltaryGreen
-import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
@@ -49,6 +50,7 @@ fun DualInputField(
 
     val textFocusRequester = remember { FocusRequester() }
     val numberFocusRequester = remember { FocusRequester() }
+    val keyBoardController = LocalSoftwareKeyboardController.current
 
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround,
@@ -57,7 +59,7 @@ fun DualInputField(
         OutlinedTextField(
             modifier = Modifier
                 .padding(vertical = 8.dp)
-                .weight(1f)
+                .weight(0.6f)
                 .focusRequester(textFocusRequester),
             value = textValue,
             onValueChange = {
@@ -65,6 +67,7 @@ fun DualInputField(
             },
             placeholder = {
                 Text(
+                    modifier = Modifier.padding(start = 20.dp),
                     text = textPlaceholderLabel,
                     fontSize = 18.sp,
                     textAlign = TextAlign.End
@@ -79,7 +82,7 @@ fun DualInputField(
                 numberFocusRequester.requestFocus()
             }) {
             },
-            shape = RoundedCornerShape(topStart = 30.dp, bottomStart = 30.dp),
+            shape = RoundedCornerShape(topStart = SearchInputCornerRadius, bottomStart = SearchInputCornerRadius),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = MiltaryGreen,
                 focusedBorderColor = MiltaryGreen.copy(alpha = 0.5f)
@@ -89,14 +92,15 @@ fun DualInputField(
         OutlinedTextField(
             modifier = Modifier
                 .padding(vertical = 8.dp)
-                .weight(1f)
+                .weight(0.4f)
                 .focusRequester(numberFocusRequester),
             value = numberValue,
             onValueChange = { number ->
-                numberValue = number.filter { it.isDigit() }
+                numberValue = number.filter { it.isDigit()  }
             },
             placeholder = {
                 Text(
+                    modifier = Modifier.padding(start = 30.dp),
                     text = numberPlaceholderLabel,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center
@@ -107,10 +111,10 @@ fun DualInputField(
                 keyboardType = KeyboardType.Number
             ),
             keyboardActions = KeyboardActions {
-                numberFocusRequester.freeFocus()
+                keyBoardController?.hide()
                 onEvent(HomeEvent.SearchItinerary(textValue, numberValue))
             },
-            shape = RoundedCornerShape(topEnd = 30.dp, bottomEnd = 30.dp),
+            shape = RoundedCornerShape(topEnd = SearchInputCornerRadius, bottomEnd = SearchInputCornerRadius),
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = MiltaryGreen,
                 focusedBorderColor = MiltaryGreen.copy(alpha = 0.5f)
@@ -122,6 +126,7 @@ fun DualInputField(
                 .size(36.dp)
                 .clickable {
                     Log.d("DualInputField", "Search button clicked --> ${textValue} ${numberValue}")
+                    keyBoardController?.hide()
                     onEvent(HomeEvent.SearchItinerary(textValue, numberValue))
                 },
             painter = painterResource(R.drawable.ic_search),
@@ -134,5 +139,5 @@ fun DualInputField(
 @Preview(showBackground = true)
 @Composable
 fun DualInputFieldPreview() {
-    DualInputField(koinViewModel())
+    DualInputField(onEvent = {})
 }

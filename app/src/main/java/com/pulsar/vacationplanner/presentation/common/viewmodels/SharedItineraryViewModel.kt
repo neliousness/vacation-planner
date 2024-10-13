@@ -4,14 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pulsar.vacationplanner.domain.model.itinerary.ItineraryData
 import com.pulsar.vacationplanner.domain.model.itinerary.LocationItinerary
-import com.pulsar.vacationplanner.util.Constants.ONBOARDED
-import com.pulsar.vacationplanner.util.PreferencesHelper
+import com.pulsar.vacationplanner.domain.usecases.LoadOnboardDataUseCase
+import com.pulsar.vacationplanner.domain.usecases.SaveOnboardDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class SharedLocationItineraryViewModel(private val preferencesHelper: PreferencesHelper) :
+class SharedLocationItineraryViewModel(
+    private val saveOnboardDataUseCase: SaveOnboardDataUseCase,
+    private val loadOnboardDataUseCase: LoadOnboardDataUseCase
+) :
     ViewModel() {
 
     private val _selectedLocationItinerary = MutableStateFlow<LocationItinerary?>(null)
@@ -22,6 +25,13 @@ class SharedLocationItineraryViewModel(private val preferencesHelper: Preference
     val selectedItinerary: StateFlow<ItineraryData?> =
         _selectedItinerary.asStateFlow()
 
+    private val _isOnboarded = MutableStateFlow(false)
+    val isOnboarded: StateFlow<Boolean> = _isOnboarded
+
+    init {
+        loadData()
+    }
+
     fun setSelectedLocationItinerary(locationItinerary: LocationItinerary?) {
         _selectedLocationItinerary.value = locationItinerary
     }
@@ -30,24 +40,16 @@ class SharedLocationItineraryViewModel(private val preferencesHelper: Preference
         _selectedItinerary.value = itineraryData
     }
 
-    private val _isOnboarded = MutableStateFlow(false)
-    val isOnboarded: StateFlow<Boolean> = _isOnboarded
-
-    init {
-        loadData()
-    }
-
     fun saveData(key: String, value: Boolean) {
         viewModelScope.launch {
-            preferencesHelper.saveBoolean(key, value)
+            saveOnboardDataUseCase(key, value)
             _isOnboarded.value = value
         }
     }
 
     private fun loadData() {
         viewModelScope.launch {
-            val data = preferencesHelper.getBoolean(ONBOARDED, false)
-            _isOnboarded.value = data
+            _isOnboarded.value = loadOnboardDataUseCase.invoke()
         }
     }
 }
