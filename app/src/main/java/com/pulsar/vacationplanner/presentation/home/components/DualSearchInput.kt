@@ -111,7 +111,7 @@ fun DualInputField(
                 keyboardType = KeyboardType.Number
             ),
             keyboardActions = KeyboardActions {
-                keyBoardController?.hide()
+               keyBoardController?.hide()
                 onEvent(HomeEvent.SearchItinerary(textValue, numberValue))
             },
             shape = RoundedCornerShape(topEnd = SearchInputCornerRadius, bottomEnd = SearchInputCornerRadius),
